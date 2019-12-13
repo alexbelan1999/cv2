@@ -1,22 +1,26 @@
 import datetime
-
-import cv2
-import numpy as np
 import os
 
+import cv2
+
 recognizer = cv2.face.LBPHFaceRecognizer_create()
-recognizer.read('face_recognition.yml')
+rec = int(input("Введите 1 для фото с веб-камеры, 2 для простых фотографиях: "))
+names = None
+if rec == 1:
+    recognizer.read(os.getcwd() + '\\face_recognition\\face_recognition_web_camera.yml')
+    names = ['None', 'Alex_Belan', 'Vitaly_Belan']
+elif rec == 2:
+    recognizer.read(os.getcwd() + '\\face_recognition\\face_recognition_photo.yml')
+    names = ['None', 'Bill_Gates', 'Elon_Musk', 'Steve_Jobs']
+else:
+    print("Ошибка выбора варианта!")
 cascadePath = "haarcascade_frontalface_default.xml"
 faceCascade = cv2.CascadeClassifier(cascadePath)
 
 font = cv2.FONT_HERSHEY_SIMPLEX
 id = 0
 
-names = ['None', 'Alex_Belan','Bill_Gates', 'Victoria']
-
 cam = cv2.VideoCapture(1)
-cam.set(3, 640)
-cam.set(4, 480)
 
 PADDING = 20
 identities = []
@@ -33,9 +37,9 @@ while True:
         x2 = x + w + PADDING
         y2 = y + h + PADDING
         cv2.rectangle(img, (x1, y1), (x2, y2), (0, 255, 0), 2)
-        id, confidence = recognizer.predict(gray[y1:y2, x1:x2])
+        id, confidence = recognizer.predict(gray[y:y + h, x:x + w])
         print(confidence)
-        if (confidence < 100) and round(100 - confidence) > 50:
+        if (confidence < 100) and round(100 - confidence,2) > 63.55:
             person = names[id]
             identities.append(person)
             confidence = "  {0}%".format(round(100 - confidence))
@@ -44,8 +48,6 @@ while True:
             confidence = "  {0}%".format(round(100 - confidence))
 
         img = cv2.putText(img, person + '' + confidence, (x1 + 5, y2 - 5), font, 1.0, (255, 255, 0), 2)
-        #cv2.putText(img, str(id), (x + 5, y - 5), font, 1, (255, 255, 255), 2)
-        #cv2.putText(img, str(confidence), (x + 5, y + h - 5), font, 1, (255, 255, 0), 1)
 
     if identities != []:
         basename = ""

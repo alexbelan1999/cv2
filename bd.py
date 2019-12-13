@@ -9,7 +9,7 @@ print("Смотрите в камеру")
 count = 0
 PADDING = 20
 
-while (True):
+while True:
     ret, img = cam.read()
     img = cv2.flip(img, 1)
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -22,14 +22,14 @@ while (True):
         y2 = y + h + PADDING
         cv2.rectangle(img, (x1, y1), (x2, y2), (0, 255, 0), 2)
         count += 1
-        path = os.getcwd() + '\\person\\user.' + str(face_id) + '.' + str(count) + '.jpg'
+        path = os.getcwd() + '\\person_from_web_camera\\user.' + str(face_id) + '.' + str(count) + '.jpg'
         cv2.imwrite(path, gray[y1:y2, x1:x2])
 
     cv2.imshow('photo', img)
     k = cv2.waitKey(100) & 0xff
     if k == 27:
         break
-    elif count >= 10:
+    elif count >= 30:
         break
 
 cam.release()

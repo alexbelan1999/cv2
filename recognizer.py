@@ -1,12 +1,14 @@
+import os
+
 import cv2
 import numpy as np
-import os
 
 recognizer = cv2.face.LBPHFaceRecognizer_create()
 
+
 def getImagesAndLabels(path):
-    imagePaths = [os.path.join(path,f) for f in os.listdir(path)]
-    face=[]
+    imagePaths = [os.path.join(path, f) for f in os.listdir(path)]
+    face = []
     ids = []
 
     for imagePath in imagePaths:
@@ -15,11 +17,22 @@ def getImagesAndLabels(path):
         face.append(img)
         id = int(os.path.split(imagePath)[-1].split(".")[1])
         ids.append(id)
-    return face,ids
+    return face, ids
 
-path = os.getcwd() + '\\person\\'
-faces,ids = getImagesAndLabels(path)
+
+rec = int(input("Введите 1 для обучения на фото с веб-камеры, 2 для обучения на простых фотографиях: "))
+path = ' '
+path1 = ' '
+if rec == 1:
+    path = os.getcwd() + '\\person_from_web_camera\\'
+    path1 = os.getcwd() + '\\face_recognition\\face_recognition_web_camera.yml'
+elif rec == 2:
+    path = os.getcwd() + '\\person_from_photo\\'
+    path1 = os.getcwd() + '\\face_recognition\\face_recognition_photo.yml'
+else:
+    print("Ошибка выбора варианта для обучения!")
+faces, ids = getImagesAndLabels(path)
 
 recognizer.train(faces, np.array(ids))
 
-recognizer.write('face_recognition.yml')
+recognizer.write(path1)
