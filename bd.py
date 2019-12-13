@@ -8,6 +8,7 @@ face_id = input('Введите id пользователя: ')
 print("Смотрите в камеру")
 count = 0
 PADDING = 20
+
 while (True):
     ret, img = cam.read()
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
