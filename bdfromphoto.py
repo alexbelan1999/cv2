@@ -39,6 +39,8 @@ for file in glob.glob(path):
 
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     faces = face_detector.detectMultiScale(gray, 1.2, 5)
+    faces_detected = identity + " лиц обнаружено: " + format(len(faces))
+    print(faces_detected)
 
     for (x, y, w, h) in faces:
         x1 = x - PADDING

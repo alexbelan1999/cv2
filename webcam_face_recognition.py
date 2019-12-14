@@ -6,14 +6,18 @@ import cv2
 recognizer = cv2.face.LBPHFaceRecognizer_create()
 rec = int(input("Введите 1 для фото с веб-камеры, 2 для простых фотографиях: "))
 names = None
+
 if rec == 1:
     recognizer.read(os.getcwd() + '\\face_recognition\\face_recognition_web_camera.yml')
     names = ['None', 'Alex_Belan', 'Vitaly_Belan']
+
 elif rec == 2:
     recognizer.read(os.getcwd() + '\\face_recognition\\face_recognition_photo.yml')
     names = ['None', 'Bill_Gates', 'Elon_Musk', 'Steve_Jobs']
+
 else:
     print("Ошибка выбора варианта!")
+
 cascadePath = "haarcascade_frontalface_default.xml"
 faceCascade = cv2.CascadeClassifier(cascadePath)
 
@@ -39,7 +43,7 @@ while True:
         cv2.rectangle(img, (x1, y1), (x2, y2), (0, 255, 0), 2)
         id, confidence = recognizer.predict(gray[y:y + h, x:x + w])
         print(confidence)
-        if (confidence < 100) and round(100 - confidence,2) > 63.55:
+        if (confidence < 100) and round(100 - confidence) > 55:
             person = names[id]
             identities.append(person)
             confidence = "  {0}%".format(round(100 - confidence))
