@@ -59,7 +59,7 @@ for file in glob.glob(path):
         cv2.rectangle(img, (x1, y1), (x2, y2), (0, 255, 0), 2)
         id, confidence = recognizer.predict(gray[y:y + h, x:x + w])
         print(confidence)
-        if (confidence < 100) and round(100 - confidence) > 55:
+        if (confidence < 100) and round(100 - confidence) > 0:
             person = names[id]
             identities.append(person)
             confidence = "  {0}%".format(round(100 - confidence))
